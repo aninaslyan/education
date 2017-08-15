@@ -1,10 +1,11 @@
-var mangoose = require('mangoose');
-var Schema = mangoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var movieModel = new Shema({
+var movieModel=new Schema({
     title:String,
     genre:String,
-    rating: Number,
-    isReleased:{type:Boolean, default:true}
+    rating:Number,
+    isReleased:{type:Boolean,default:true}
 });
-module.exports = mongoose.model("Movie, movieModel");
+
+module.exports = mongoose.model("Movie",movieModel);
