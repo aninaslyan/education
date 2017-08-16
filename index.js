@@ -1,26 +1,12 @@
-var http = require('http');
+const express = require("express");
+const bodyParser = require("body-parser");
+const emailRouter = require("./src/route/email-rout");
 
-http.createServer(function (req, res) {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.end('Hello World!');
-}).listen(3000);
+const app = express();
+app.use(bodyParser.json());
 
+app.use("/email", emailRouter);
 
-// content of index.js
-// const http = require('http')
-// const port = 3000
-//
-// const requestHandler = (request, response) => {
-//     console.log(request.url)
-//     response.end('Hello Node.js Server!')
-// }
-//
-// const server = http.createServer(requestHandler)
-//
-// server.listen(port, (err) => {
-//     if (err) {
-//         return console.log('something bad happened', err)
-//     }
-//
-//     console.log(`server is listening on ${port}`)
-// })
+app.listen(8080, function () {
+    console.log("Example app listening on port 8080!")
+});
