@@ -6,4 +6,4 @@ stop
 
 `docker-compose stop`
 
-the new folder is movies.api
+the new folder is email-api-server
