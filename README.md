@@ -5,5 +5,3 @@
 stop
 
 `docker-compose stop`
-
-`the new folder is mail_sender`
