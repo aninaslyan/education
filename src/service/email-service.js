@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const app = express();
+const nodemailer = require('nodemailer');
 
 const requestTime = function (req, res, next) {
     req.requestTime = Date.now();
@@ -13,8 +14,6 @@ console.log(time);
 function sendEmail(/*email, subjet, body, time*/) {
 
     //repository.createEmail(email, subjet, body, scheduleDateTime);
-
-    var nodemailer = require('nodemailer');
 
     var transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -40,5 +39,4 @@ function sendEmail(/*email, subjet, body, time*/) {
     });
 
 }
-//sendEmail();
 module.exports = router;
