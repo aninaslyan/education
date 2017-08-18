@@ -7,7 +7,7 @@ function sendEmail(/*email, subjet, body, time*/) {
 
     //repository.createEmail(email, subjet, body, scheduleDateTime);
 
-    var transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: 'aninaslyan84@gmail.com',
@@ -15,7 +15,7 @@ function sendEmail(/*email, subjet, body, time*/) {
         }
     });
 
-    var mailOptions = {
+    const mailOptions = {
         from: 'noreply.email@gmail.com',
         to: 'ani.naslyan82@gmail.com',
         subject: 'Sending Email',

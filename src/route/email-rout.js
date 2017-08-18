@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 // Connect to MongoDB and create/use database called todoAppTest
 mongoose.connect('mongodb://localhost:27017/mydb');
 // Create a schema
-var email = new mongoose.Schema({
+const email = new mongoose.Schema({
     email: String,
     subject: String,
     body: String,
@@ -22,11 +22,11 @@ var email = new mongoose.Schema({
     isRead: { type: Boolean, default: false }
 });
 // Create a model based on the schema
-var Todo = mongoose.model('Email', email);
+const Todo = mongoose.model('Email', email);
 
 router.post('/', function(req, res){
 
-    var Email = new Todo({email: "noreplyemail@mail.ru", subject: "The subject of email", body: "the body of the current email", scheduleDateTime: "Fri Aug 18 2017 15:36:49 GMT+0400 (GET)", isSend: false, isRead: false});
+    let Email = new Todo({email: "noreplyemail@mail.ru", subject: "The subject of email", body: "the body of the current email", scheduleDateTime: "Fri Aug 18 2017 15:36:49 GMT+0400 (GET)", isSend: false, isRead: false});
 
     Email.save(function(err){
         if(err)
@@ -49,18 +49,21 @@ router.get('/', function(req, res){
 });
 
 router.get('/email/:id', function(req, res){
-    // Todo.find(({}, {email: true}), function (err, results) {
-    //     if (err) return console.error(err);
-    //     console.log(results);
-    //     //console.log(Email);
-    //     res.json(results);
-    // });
+     Todo.find({ _id : {$gt:"5996deee6466dc0e5978c1d2"} }, function (err, results) {
+        if (err) return console.error(err);
+        console.log(results);
+        //console.log(Email);
+        res.json(results);
+    });
 });
 
 router.put('/:id', function(req, res){
     Todo.findOneAndUpdate(
         { "email" : "noreplyemail@mail.ru" },
-        { $inc: { "email" : "noreply@bk.ru" } }
+        { $set: { "email" : "noreply@bk.ru" } }, function(err, result){
+            if (err) return console.error(err);
+            console.log(result);
+        }
     );
 });
 
