@@ -1,7 +1,6 @@
-
 ### How to start MongoDB on local
 `$ docker-compose up -d`
 
-stop
+issues
 
-`docker-compose stop`
+`fix /email/:id, put, delete`
