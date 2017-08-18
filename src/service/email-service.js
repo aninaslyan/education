@@ -1,15 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const app = express();
-const nodemailer = require('nodemailer');
-
 const requestTime = function (req, res, next) {
     req.requestTime = Date.now();
     next();
 };
-
-const time = app.use(requestTime);
-console.log(time);
 
 function sendEmail(/*email, subjet, body, time*/) {
 
@@ -39,4 +31,7 @@ function sendEmail(/*email, subjet, body, time*/) {
     });
 
 }
-module.exports = router;
+
+module.exports = {
+    sendEmail: sendEmail
+};

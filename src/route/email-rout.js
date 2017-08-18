@@ -1,30 +1,67 @@
 // CRUD     RESTful (http methods)
 
 // crate    POST        /
-// read     GET         /{id}   /  - list
+// read     GET         /{id}   /  - list    /email/:id
 // update   PUT         /{id}
 // delete   DELETE      /{id}
 const express = require('express');
-const app = express();
 const router = express.Router();
-const email_service = require( __dirname + '/../service/email-service');
-app.use('/', email_service);
+const emailService = require( __dirname + '/../service/email-service');
+const mongoose = require('mongoose');
+
+
+// Connect to MongoDB and create/use database called todoAppTest
+mongoose.connect('mongodb://localhost:27017/mydb');
+// Create a schema
+var email = new mongoose.Schema({
+    email: String,
+    subject: String,
+    body: String,
+    scheduleDateTime: { type: Date, default: Date.now },
+    isSend: { type: Boolean, default: false },
+    isRead: { type: Boolean, default: false }
+});
+// Create a model based on the schema
+var Todo = mongoose.model('Email', email);
 
 router.post('/', function(req, res){
-    try {
-        sendEmail(/*res.body.email, res.body.subject, res.body.body, res.body.scheduleDateTime*/);
-        res.sendStatus('POST request for sending email');
-    } catch (err) {
-        res.sendStatus(500);
-    }
+
+    var Email = new Todo({email: "noreplyemail@mail.ru", subject: "The subject of email", body: "the body of the current email", scheduleDateTime: "Fri Aug 18 2017 15:36:49 GMT+0400 (GET)", isSend: false, isRead: false});
+
+    Email.save(function(err){
+        if(err)
+            console.log(err);
+        else
+            console.log(Email);
+    });
+
+
 });
 
-router.get('/:id', function(req, res){
-    res.send('working');
+router.get('/', function(req, res){
+
+    Todo.find(function (err, todos) {
+        if (err) return console.error(err);
+        console.log(todos);
+        //console.log(Email);
+        res.json(todos);
+    });
+});
+
+router.get('/email/:id', function(req, res){
+    // Todo.find(({}, {email: true}), function (err, results) {
+    //     if (err) return console.error(err);
+    //     console.log(results);
+    //     //console.log(Email);
+    //     res.json(results);
+    // });
 });
 
 router.put('/:id', function(req, res){
-    res.send({type: 'PUT'});
+    Todo.findOneAndUpdate(
+        { "email" : "noreplyemail@mail.ru" },
+        { $inc: { "email" : "noreply@bk.ru" } }
+    );
 });
 
 router.delete('/:id', function(req, res){
@@ -32,5 +69,3 @@ router.delete('/:id', function(req, res){
 });
 
 module.exports = router;
-app.use('/', router);
-
