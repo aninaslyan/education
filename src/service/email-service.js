@@ -1,37 +1,54 @@
-const requestTime = function (req, res, next) {
-    req.requestTime = Date.now();
-    next();
-};
+const repository = require('../repository/email-repository');
 
-function sendEmail(/*email, subjet, body, time*/) {
-
-    //repository.createEmail(email, subjet, body, scheduleDateTime);
-
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'aninaslyan84@gmail.com',
-            pass: 'password'
-        }
+async function create(email, subject, body, scheduleDateTime) {
+    if (!email) {
+        throw new Error("Email not fount");
+    }
+    if (!subject) {
+        throw new Error("Subject not fount");
+    }
+    if (!body) {
+        throw new Error("Body not fount");
+    }
+    if (!scheduleDateTime) {
+        throw new Error("Schedule Date Time not fount");
+    }
+    return emailRepository.create({
+        email: email,
+        subject: subject,
+        body: body,
+        scheduleDateTime: scheduleDateTime
     });
+}
 
-    const mailOptions = {
-        from: 'noreply.email@gmail.com',
-        to: 'ani.naslyan82@gmail.com',
-        subject: 'Sending Email',
-        text: 'A body message'
-    };
+async function getList(skip, limit) {
+    return emailRepository.getList(skip, limit);
+}
 
-    transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
+async function getOne(id) {
+    return emailRepository.getOne(id);
+}
+
+async function update(id, email, subject, body, scheduleDateTime) {
+    return emailRepository.update(
+        id,
+        {
+            email: email,
+            subject: subject,
+            body: body,
+            scheduleDateTime: scheduleDateTime
         }
-    });
+    );
+}
 
+async function remove(id) {
+    return emailRepository.remove(id);
 }
 
 module.exports = {
-    sendEmail: sendEmail
+    create: create,
+    getList: getList,
+    getOne: getOne,
+    update: update,
+    remove: remove,
 };

@@ -1,4 +1,4 @@
-const Email = require('../model/email-mode');
+const Email = require('../model/user-mode');
 const mongoose = require('mongoose');
 
 async function create(emailObj) {

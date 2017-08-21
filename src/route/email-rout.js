@@ -1,78 +1,123 @@
-// CRUD     RESTful (http methods)
-
-// crate    POST        /
-// read     GET         /{id}   /  - list    /email/:id
-// update   PUT         /{id}
-// delete   DELETE      /{id}
 const express = require('express');
 const router = express.Router();
-const emailService = require( __dirname + '/../service/email-service');
-const mongoose = require('mongoose');
+const emailService = require('../service/email-service');
 
-mongoose.connect('mongodb://localhost:27017/mydb');
-
-const email = new mongoose.Schema({
-    email: String,
-    subject: String,
-    body: String,
-    scheduleDateTime: { type: Date, default: Date.now },
-    isSend: { type: Boolean, default: false },
-    isRead: { type: Boolean, default: false }
-}, {
-    versionKey: false
+router.post('/', async (req, res)  => {
+    try {
+        const email            = req.body['email'];
+        const subject          = req.body['subject'];
+        const body             = req.body['body'];
+        const scheduleDateTime = req.body['scheduleDateTime'];
+        const emailObj = await emailService.create(email, subject, body, scheduleDateTime);
+        res.status(200).json(emailObj);
+    } catch (err) {
+        res.status(500).json(err);
+    }
 });
-// Create a model based on the schema
-const Todo = mongoose.model('Email', email);
 
-router.post('/', function(req, res){
-
-    let Email = new Todo({email: "noreplyemail@mail.ru", subject: "The subject of email", body: "the body of the current email", scheduleDateTime: "Fri Aug 18 2017 15:36:49 GMT+0400 (GET)", isSend: false, isRead: false});
-
-    Email.save(function(err, todos){
-        if(err)
-            console.log(err);
-        else
-            console.log(Email);
-        res.json(todos);
-
-    });
+router.get('/', async (req, res)  => {
+    try {
+        const skip = req.query['skip'] || 0;
+        const limit = req.query['limit'] || 10;
+        const emailObjects = await emailService.getList(parseInt(skip), parseInt(limit));
+        res.status(200).json(emailObjects);
+    } catch (err) {
+        res.status(500).json(err);
+    }
 
 });
 
-router.get('/', function(req, res){
-
-    Todo.find(function (err, todos) {
-        if (err) return console.error(err);
-        console.log(todos);
-        res.json(todos);
-    });
+router.get('/:id', async (req, res)  => {
+    try {
+        const id = req.param('id');
+        const emailObj = await emailService.getOne(id);
+        res.status(200).json(emailObj);
+    } catch (err) {
+        res.status(500).json(err);
+    }
 });
 
-router.get('/email/:id', function(req, res, db){
+router.put('/:id', async (req, res)  => {
+    try {
+        const id = req.param('id');
+        const email            = req.body['email'];
+        const subject          = req.body['subject'];
+        const body             = req.body['body'];
+        const scheduleDateTime = req.body['scheduleDateTime'];
+        const emailObj = await emailService.update(id, email, subject, body, scheduleDateTime);
+        res.status(200).json(emailObj);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
-   Todo.find({_id: req.params.id}, function(err, todos){
-       if (err) res.json(err);
-       else res.json(todos);
-
-   }).select({ "email": 1, "_id": 1});
-
+router.delete('/:id', async (req, res)  => {
+    try {
+        const id = req.param('id');
+        const emailObj = await emailService.remove(id);
+        res.status(200).json(emailObj);
+    } catch (err) {
+        res.status(500).json(err);
+    }
 });
 
 
-router.put('/:id', function(req, res){
-    Todo.findOneAndUpdate({_id: req.params.id}, {$set: {email: 'mymail@gmail.com'}}, function(err, todos){
-            if (err) return res.json(err);
-            else res.json(todos);
-        }
-    );
+router.post('/', async (req, res)  => {
+    try {
+        const email            = req.body['email'];
+        const subject          = req.body['subject'];
+        const body             = req.body['body'];
+        const scheduleDateTime = req.body['scheduleDateTime'];
+        const emailObj = await emailService.create(email, subject, body, scheduleDateTime);
+        res.status(200).json(emailObj);
+    } catch (err) {
+        res.status(500).json(err);
+    }
 });
 
+router.get('/', async (req, res)  => {
+    try {
+        const skip = req.query['skip'] || 0;
+        const limit = req.query['limit'] || 10;
+        const emailObjects = await emailService.getList(parseInt(skip), parseInt(limit));
+        res.status(200).json(emailObjects);
+    } catch (err) {
+        res.status(500).json(err);
+    }
 
-router.delete('/:id', function(req, res, obj){
-    Todo.remove({_id: req.params.id},
-        function(err){
-            if(err) res.json(err);
-            else    res.json("one row deleted");
-        });
+});
+
+router.get('/:id', async (req, res)  => {
+    try {
+        const id = req.param('id');
+        const emailObj = await emailService.getOne(id);
+        res.status(200).json(emailObj);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+router.put('/:id', async (req, res)  => {
+    try {
+        const id = req.param('id');
+        const email            = req.body['email'];
+        const subject          = req.body['subject'];
+        const body             = req.body['body'];
+        const scheduleDateTime = req.body['scheduleDateTime'];
+        const emailObj = await emailService.update(id, email, subject, body, scheduleDateTime);
+        res.status(200).json(emailObj);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+router.delete('/:id', async (req, res)  => {
+    try {
+        const id = req.param('id');
+        const emailObj = await emailService.remove(id);
+        res.status(200).json(emailObj);
+    } catch (err) {
+        res.status(500).json(err);
+    }
 });
 module.exports = router;
