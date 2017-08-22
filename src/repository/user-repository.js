@@ -1,24 +1,24 @@
-const Email = require('../model/user-mode');
+const User = require('../model/user-mode');
 const mongoose = require('mongoose');
 
-async function create(emailObj) {
-    return Email.create(emailObj);
+async function create(UserObj) {
+    return User.create(UserObj);
 }
 
 async function getList(skip, limit) {
-    return Email.find().skip(skip).limit(limit);
+    return User.find().skip(skip).limit(limit);
 }
 
 async function getOne(id) {
-    return Email.findById(id);
+    return User.findById(id);
 }
 
-async function update(id, emailObj) {
-    return Email.update({_id: mongoose.mongo.ObjectId(id)}, {$set: emailObj});
+async function update(id, UserObj) {
+    return User.update({_id: mongoose.mongo.ObjectId(id)}, {$set: UserObj});
 }
 
 async function remove(id) {
-    return Email.remove({_id: mongoose.mongo.ObjectId(id)});
+    return User.remove({_id: mongoose.mongo.ObjectId(id)});
 }
 
 module.exports = {
