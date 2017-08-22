@@ -43,7 +43,8 @@ router.put('/:id', async (req, res)  => {
         const name             = req.body['name'];
         const surname          = req.body['surname'];
         const age              = req.body['age'];
-        const userObj = await userService.update(id, name, surname, age);
+        const gender           = req.body['gender'];
+        const userObj = await userService.update(id, name, surname, age, gender);
         res.status(200).json(userObj);
     } catch (err) {
         res.status(500).json(err);
