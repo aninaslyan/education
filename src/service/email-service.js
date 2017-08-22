@@ -13,7 +13,7 @@ async function create(email, subject, body, scheduleDateTime) {
     if (!scheduleDateTime) {
         throw new Error("Schedule Date Time not fount");
     }
-    return emailRepository.create({
+    return repository.create({
         email: email,
         subject: subject,
         body: body,
@@ -22,15 +22,15 @@ async function create(email, subject, body, scheduleDateTime) {
 }
 
 async function getList(skip, limit) {
-    return emailRepository.getList(skip, limit);
+    return repository.getList(skip, limit);
 }
 
 async function getOne(id) {
-    return emailRepository.getOne(id);
+    return repository.getOne(id);
 }
 
 async function update(id, email, subject, body, scheduleDateTime) {
-    return emailRepository.update(
+    return repository.update(
         id,
         {
             email: email,
@@ -42,7 +42,7 @@ async function update(id, email, subject, body, scheduleDateTime) {
 }
 
 async function remove(id) {
-    return emailRepository.remove(id);
+    return repository.remove(id);
 }
 
 module.exports = {

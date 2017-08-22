@@ -1,4 +1,4 @@
-const repository = require('../repository/email-repository');
+const userRepository = require('../repository/user-repository');
 
 async function create(name, surname, age, gender) {
     if (!name) {
@@ -10,10 +10,10 @@ async function create(name, surname, age, gender) {
     if (!age) {
         throw new Error("Age not fount");
     }
-    if (!gedner) {
+    if (!gender) {
         throw new Error("Gedner not fount");
     }
-    return emailRepository.create({
+    return userRepository.create({
         name: name,
         surname: surname,
         age: age,
@@ -22,15 +22,15 @@ async function create(name, surname, age, gender) {
 }
 
 async function getList(skip, limit) {
-    return emailRepository.getList(skip, limit);
+    return userRepository.getList(skip, limit);
 }
 
 async function getOne(id) {
-    return emailRepository.getOne(id);
+    return userRepository.getOne(id);
 }
 
 async function update(id, name, surname, age, gender) {
-    return emailRepository.update(
+    return userRepository.update(
         id,
         {
             name: name,
@@ -42,7 +42,7 @@ async function update(id, name, surname, age, gender) {
 }
 
 async function remove(id) {
-    return emailRepository.remove(id);
+    return userRepository.remove(id);
 }
 
 module.exports = {
